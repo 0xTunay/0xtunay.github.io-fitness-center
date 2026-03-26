@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Тренеры — FitLife Pro</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <style>
+    .trainer-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .trainer-card:hover {
+      border-color: rgba(230,48,48,0.3);
+      transform: translateY(-6px);
+      box-shadow: 0 24px 48px rgba(0,0,0,0.5);
+    }
+
+    .trainer-photo {
+      height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .trainer-photo .trainer-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 40%, var(--card-bg));
+    }
+
+    .trainer-badge {
+      position: absolute;
+      top: 16px; right: 16px;
+      z-index: 2;
+    }
+.filter-tab {
+  display: inline-block;
+  padding: 8px 16px;
+  margin: 5px;
+  font-size: 14px;
+  color: #fff;
+  background: transparent;
+  border: 1px solid rgba(255, 0, 0, 0.6);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filter-tab:hover {
+  background: rgba(255, 0, 0, 0.15);
+  border-color: #ff2a2a;
+  color: #ff4d4d;
+}
+
+.filter-tab.active {
+  background: linear-gradient(135deg, #ff2a2a, #b30000);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+}
+
+.filter-tab:active {
+  transform: scale(0.95);
+}
+    .trainer-body { padding: 24px; }
+
+    .trainer-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 26px;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+
+    .trainer-spec {
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .trainer-bio {
+      color: var(--text-muted);
+      font-size: 13px;
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .trainer-stats {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 20px;
+      padding: 16px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .trainer-stat-val {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      color: var(--accent);
+      letter-spacing: 1px;
+      display: block;
+    }
+
+    .trainer-stat-lbl {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .trainer-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+
+    .trainer-tag {
+      padding: 4px 10px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 11px;
+      border-radius: 2px;
+    }
+
+    .rating { display: flex; align-items: center; gap: 6px; margin-bottom: 16px; }
+    .stars-rating { color: #f59e0b; font-size: 14px; }
+    .rating-val { font-weight: 700; font-size: 14px; }
+    .rating-count { color: var(--text-muted); font-size: 12px; }
+
+    /* ─── MODAL ─── */
+    .modal { position: fixed; inset: 0; z-index: 2000; display: none; align-items: center; justify-content: center; }
+    .modal.open { display: flex; }
+    .modal-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); }
+    .modal-box {
+      position: relative; z-index: 1;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 48px;
+      width: 90%; max-width: 560px;
+      animation: modalIn 0.3s ease;
+      max-height: 90vh; overflow-y: auto;
+    }
+    @keyframes modalIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+    .modal-close {
+      position: absolute; top: 16px; right: 16px;
+      background: var(--bg3); border: 1px solid var(--border); color: var(--text-muted);
+      width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 16px;
+      display: flex; align-items: center; justify-content: center; transition: var(--transition);
+    }
+    .modal-close:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+    .trainer-detail-photo {
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 40px;
+      margin: 0 auto 24px;
+      border: 3px solid rgba(230,48,48,0.4);
+    }
+
+    .cert-list { list-style: none; margin-top: 16px; }
+    .cert-list li {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 0; border-bottom: 1px solid var(--border);
+      color: var(--text-muted); font-size: 13px;
+    }
+    .cert-list li::before { content: '🏆'; }
+  </style>
+</head>
+<body data-page="trainers">
+
+<div id="header-placeholder"></div>
+<div class="page-content">
+
+  <!-- HERO -->
+  <div class="page-hero">
+    <div class="container">
+      <p class="section-label fade-in">Наша команда</p>
+      <h1 class="section-title fade-in">Лучшие <em>тренеры</em></h1>
+      <p class="section-sub fade-in">
+        15 сертифицированных специалистов с международными дипломами. Ваш успех — их миссия.
+      </p>
+    </div>
+  </div>
+
+  <!-- FILTER -->
+  <section class="section">
+    <div class="container">
+      <div class="filter-tabs" style="margin-bottom:48px;">
+        <button class="filter-tab active" data-filter="all">Все тренеры</button>
+        <button class="filter-tab" data-filter="strength">Силовые</button>
+        <button class="filter-tab" data-filter="yoga">Йога / Пилатес</button>
+        <button class="filter-tab" data-filter="cardio">Кардио / Бокс</button>
+        <button class="filter-tab" data-filter="nutrition">Нутрициология</button>
+      </div>
+
+      <div class="grid-3" id="trainersGrid">
+
+        <div class="trainer-card fade-in" data-category="strength" onclick="openTrainer('igor')">
+          <div class="trainer-photo" style="background:linear-gradient(135deg,#1a0808,#2a1010);">
+            💪
+            <div class="trainer-overlay"></div>
+            <div class="trainer-badge"><span class="badge">Топ тренер</span></div>
+          </div>
+          <div class="trainer-body">
+            <div class="trainer-name">Игорь Петров</div>
+            <div class="trainer-spec">Силовые тренировки · Кросс-фит</div>
+            <div class="rating"><span class="stars-rating">★★★★★</span><span class="rating-val">5.0</span><span class="rating-count">(48 отзывов)</span></div>
+            <p class="trainer-bio">Мастер спорта по пауэрлифтингу. 10 лет опыта. Специализируется на наборе мышечной массы и развитии силы.</p>
+            <div class="trainer-stats">
+              <div><span class="trainer-stat-val">10</span><span class="trainer-stat-lbl">Лет опыта</span></div>
+              <div><span class="trainer-stat-val">120+</span><span class="trainer-stat-lbl">Клиентов</span></div>
+              <div><span class="trainer-stat-val">3</span><span class="trainer-stat-lbl">Сертификата</span></div>
+            </div>
+            <div class="trainer-tags">
+              <span class="trainer-tag">Пауэрлифтинг</span>
+              <span class="trainer-tag">Кросс-фит</span>
+              <span class="trainer-tag">Функциональный тренинг</span>
+            </div>
+            <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="event.stopPropagation();openModal('joinModal')">Записаться</button>
+          </div>
+        </div>
+
+        <div class="trainer-card fade-in fade-in-delay-1" data-category="yoga" onclick="openTrainer('anna')">
+          <div class="trainer-photo" style="background:linear-gradient(135deg,#0a0a1a,#12102a);">
+            🧘
+            <div class="trainer-overlay"></div>
+          </div>
+          <div class="trainer-body">
+            <div class="trainer-name">Анна Соколова</div>
+            <div class="trainer-spec">Йога · Пилатес · Медитация</div>
+            <div class="rating"><span class="stars-rating">★★★★★</span><span class="rating-val">4.9</span><span class="rating-count">(62 отзыва)</span></div>
+            <p class="trainer-bio">Сертифицированный инструктор по йоге (RYT-500). 8 лет практики в Индии и России. Медитативные техники.</p>
+            <div class="trainer-stats">
+              <div><span class="trainer-stat-val">8</span><span class="trainer-stat-lbl">Лет опыта</span></div>
+              <div><span class="trainer-stat-val">200+</span><span class="trainer-stat-lbl">Клиентов</span></div>
+              <div><span class="trainer-stat-val">5</span><span class="trainer-stat-lbl">Сертификатов</span></div>
+            </div>
+            <div class="trainer-tags">
+              <span class="trainer-tag">Хатха-йога</span>
+              <span class="trainer-tag">Виньяса</span>
+              <span class="trainer-tag">Инь-йога</span>
+            </div>
+            <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="event.stopPropagation();openModal('joinModal')">Записаться</button>
+          </div>
+        </div>
+
+        <div class="trainer-card fade-in fade-in-delay-2" data-category="cardio" onclick="openTrainer('dmitry')">
+          <div class="trainer-photo" style="background:linear-gradient(135deg,#0a1a0a,#102010);">
+            🏃
+            <div class="trainer-overlay"></div>
+          </div>
+          <div class="trainer-body">
+            <div class="trainer-name">Дмитрий Власов</div>
+            <div class="trainer-spec">Кардио · Бег · Функциональный</div>
+            <div class="rating"><span class="stars-rating">★★★★☆</span><span class="rating-val">4.8</span><span class="rating-count">(35 отзывов)</span></div>
+            <p class="trainer-bio">Мастер спорта по бегу. Участник марафонов. Тренирует бегунов от новичков до подготовки к соревнованиям.</p>
+            <div class="trainer-stats">
+              <div><span class="trainer-stat-val">7</span><span class="trainer-stat-lbl">Лет опыта</span></div>
+              <div><span class="trainer-stat-val">90+</span><span class="trainer-stat-lbl">Клиентов</span></div>
+              <div><span class="trainer-stat-val">4</span><span class="trainer-stat-lbl">Сертификата</span></div>
+            </div>
+            <div class="trainer-tags">
+              <span class="trainer-tag">Бег</span>
+              <span class="trainer-tag">TRX</span>
+              <span class="trainer-tag">Кросс-фит</span>
+            </div>
+            <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="event.stopPropagation();openModal('joinModal')">Записаться</button>
+          </div>
+        </div>
+
+        <div class="trainer-card fade-in" data-category="yoga" onclick="openTrainer('maria')">
+          <div class="trainer-photo" style="background:linear-gradient(135deg,#0d0a1a,#181025);">
+            🌸
+            <div class="trainer-overlay"></div>
+          </div>
+          <div class="trainer-body">
+            <div class="trainer-name">Мария Кузнецова</div>
+            <div class="trainer-spec">Пилатес · Стретчинг · Реабилитация</div>
+            <div class="rating"><span class="stars-rating">★★★★★</span><span class="rating-val">5.0</span><span class="rating-count">(41 отзыв)</span></div>
+            <p class="trainer-bio">Специалист по реабилитации и пилатесу. Работает с людьми после травм и операций. Мягкий подход к телу.</p>
+            <div class="trainer-stats">
+              <div><span class="trainer-stat-val">6</span><span class="trainer-stat-lbl">Лет опыта</span></div>
+              <div><span class="trainer-stat-val">85+</span><span class="trainer-stat-lbl">Клиентов</span></div>
+              <div><span class="trainer-stat-val">6</span><span class="trainer-stat-lbl">Сертификатов</span></div>
+            </div>
+            <div class="trainer-tags">
+              <span class="trainer-tag">Пилатес</span>
+              <span class="trainer-tag">Реабилитация</span>
+              <span class="trainer-tag">Стретчинг</span>
+            </div>
+            <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="event.stopPropagation();openModal('joinModal')">Записаться</button>
+          </div>
+        </div>
+
+        <div class="trainer-card fade-in fade-in-delay-1" data-category="cardio" onclick="openTrainer('elena')">
+          <div class="trainer-photo" style="background:linear-gradient(135deg,#1a0a0a,#280d0d);">
+            💃
+            <div class="trainer-overlay"></div>
+          </div>
+          <div class="trainer-body">
+            <div class="trainer-name">Елена Романова</div>
+            <div class="trainer-spec">Зумба · Аэробика · Танцевальный фитнес</div>
+            <div class="rating"><span class="stars-rating">★★★★★</span><span class="rating-val">4.9</span><span class="rating-count">(78 отзывов)</span></div>
+            <p class="trainer-bio">Лицензированный инструктор Zumba® International. Заряжает энергией с первой минуты. Занятия — это праздник!</p>
+            <div class="trainer-stats">
+              <div><span class="trainer-stat-val">5</span><span class="trainer-stat-lbl">Лет опыта</span></div>
+              <div><span class="trainer-stat-val">300+</span><span class="trainer-stat-lbl">Клиентов</span></div>
+              <div><span class="trainer-stat-val">3</span><span class="trainer-stat-lbl">Сертификата</span></div>
+            </div>
+            <div class="trainer-tags">
+              <span class="trainer-tag">Зумба</span>
+              <span class="trainer-tag">Аэробика</span>
+              <span class="trainer-tag">Латина</span>
+            </div>
+            <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="event.stopPropagation();openModal('joinModal')">Записаться</button>
+          </div>
+        </div>
+
+        <div class="trainer-card fade-in fade-in-delay-2" data-category="nutrition" onclick="openTrainer('sergey')">
+          <div class="trainer-photo" style="background:linear-gradient(135deg,#0a1a0a,#0d1f0d);">
+            🥗
+            <div class="trainer-overlay"></div>
+            <div class="trainer-badge"><span class="badge">Нутрициолог</span></div>
+          </div>
+          <div class="trainer-body">
+            <div class="trainer-name">Сергей Новиков</div>
+            <div class="trainer-spec">Нутрициология · Спортивное питание</div>
+            <div class="rating"><span class="stars-rating">★★★★★</span><span class="rating-val">4.7</span><span class="rating-count">(29 отзывов)</span></div>
+            <p class="trainer-bio">Дипломированный нутрициолог. Специализируется на спортивном питании, похудении и наборе мышечной массы.</p>
+            <div class="trainer-stats">
+              <div><span class="trainer-stat-val">9</span><span class="trainer-stat-lbl">Лет опыта</span></div>
+              <div><span class="trainer-stat-val">150+</span><span class="trainer-stat-lbl">Клиентов</span></div>
+              <div><span class="trainer-stat-val">7</span><span class="trainer-stat-lbl">Сертификатов</span></div>
+            </div>
+            <div class="trainer-tags">
+              <span class="trainer-tag">Диетология</span>
+              <span class="trainer-tag">Спортпит</span>
+              <span class="trainer-tag">Похудение</span>
+            </div>
+            <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="event.stopPropagation();openModal('joinModal')">Записаться</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</div>
+<div id="footer-placeholder"></div>
+
+<!-- TRAINER DETAIL MODAL -->
+<div class="modal" id="trainerModal">
+  <div class="modal-overlay"></div>
+  <div class="modal-box" id="trainerModalContent">
+    <button class="modal-close" onclick="closeModal('trainerModal')">✕</button>
+    <!-- filled by JS -->
+  </div>
+</div>
+
+<!-- JOIN MODAL -->
+<div class="modal" id="joinModal">
+  <div class="modal-overlay"></div>
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('joinModal')">✕</button>
+    <h3 style="font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;margin-bottom:8px;">Записаться</h3>
+    <p style="color:var(--text-muted);font-size:13px;margin-bottom:32px;">Оставьте контакты — свяжемся в течение 15 минут</p>
+    <form id="joinForm">
+      <div class="form-group"><label>Имя</label><input type="text" name="name" placeholder="Ваше имя" data-validate="required,minlen:2"></div>
+      <div class="form-group"><label>Телефон</label><input type="tel" name="phone" placeholder="+375 (___) ___-__-__" data-validate="required,phone"></div>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">Отправить заявку</button>
+    </form>
+  </div>
+</div>
+
+<script src="js/components.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/form.js"></script>
+<script>
+  // Filter
+  document.querySelectorAll('.filter-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const filter = tab.dataset.filter;
+      document.querySelectorAll('.trainer-card').forEach(card => {
+        const show = filter === 'all' || card.dataset.category === filter;
+        card.style.opacity = show ? '1' : '0';
+        card.style.transform = show ? '' : 'scale(0.95)';
+        card.style.pointerEvents = show ? '' : 'none';
+        setTimeout(() => card.style.display = show ? 'block' : 'none', show ? 0 : 300);
+        if (show) card.style.display = 'block';
+      });
+    });
+  });
+
+  // Trainer data
+  const trainers = {
+    igor: { name: 'Игорь Петров', spec: 'Силовые тренировки · Кросс-фит', emoji: '💪', exp: 10, bio: 'Мастер спорта по пауэрлифтингу. За 10 лет работы подготовил более 120 клиентов к соревнованиям и просто к жизни мечты. Специализируется на силовых тренировках, наборе мышечной массы и кросс-фит программах.', certs: ['Мастер спорта по пауэрлифтингу', 'NASM Certified Personal Trainer', 'CrossFit Level 2 Trainer'] },
+    anna: { name: 'Анна Соколова', spec: 'Йога · Пилатес · Медитация', emoji: '🧘', exp: 8, bio: 'Сертифицированный инструктор по йоге RYT-500. Прошла обучение в Индии (Ришикеш). Ведёт группы хатха, виньяса и инь-йоги. Медитативный подход к физическому совершенству.', certs: ['Yoga Alliance RYT-500', 'ERYT 200 (опыт преподавания 1000+ ч)', 'Mindfulness-Based Stress Reduction', 'Anatomy for Yoga Teachers'] },
+    dmitry: { name: 'Дмитрий Власов', spec: 'Кардио · Бег · Функциональный тренинг', emoji: '🏃', exp: 7, bio: 'Мастер спорта по лёгкой атлетике. Подготовил десятки бегунов к марафонам. Специализируется на кардио-тренировках, функциональном тренинге и подготовке к соревнованиям.', certs: ['Мастер спорта, лёгкая атлетика', 'ISSA Certified Personal Trainer', 'TRX Suspension Training Level 2'] },
+    maria: { name: 'Мария Кузнецова', spec: 'Пилатес · Стретчинг · Реабилитация', emoji: '🌸', exp: 6, bio: 'Специалист по реабилитации опорно-двигательного аппарата. Работает с людьми после травм и операций. Бережный и методичный подход к восстановлению и развитию тела.', certs: ['Balanced Body Pilates Instructor', 'Реабилитолог (RSBI)', 'Yin Yoga Teacher Training', 'Pre/Post Natal Fitness'] },
+    elena: { name: 'Елена Романова', spec: 'Зумба · Аэробика · Танцевальный фитнес', emoji: '💃', exp: 5, bio: 'Лицензированный инструктор Zumba® International. Специалист по групповым программам. Превращает тренировки в настоящий праздник. Занятия — это 100% энергия и позитив.', certs: ['Zumba® Licensed to Thrill', 'ACE Group Fitness Instructor', 'Aerobics & Fitness Association Certified'] },
+    sergey: { name: 'Сергей Новиков', spec: 'Нутрициология · Спортивное питание', emoji: '🥗', exp: 9, bio: 'Дипломированный нутрициолог с 9-летним опытом. Разработал более 150 персональных планов питания. Специализируется на спортивном питании, снижении веса и формировании здоровых пищевых привычек.', certs: ['Диплом нутрициолога (РУДН)', 'Sports Nutrition Specialist (ISSN)', 'Precision Nutrition Level 2', 'Certified Diabetes Educator'] },
+  };
+
+  function openTrainer(id) {
+    const t = trainers[id];
+    if (!t) return;
+    document.getElementById('trainerModalContent').innerHTML = `
+      <button class="modal-close" onclick="closeModal('trainerModal')">✕</button>
+      <div class="trainer-detail-photo">${t.emoji}</div>
+      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:2px;text-align:center;margin-bottom:4px;">${t.name}</h2>
+      <p style="color:var(--accent);font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;text-align:center;margin-bottom:24px;">${t.spec}</p>
+      <p style="color:var(--text-muted);font-size:14px;line-height:1.8;margin-bottom:24px;">${t.bio}</p>
+      <h4 style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px;">Сертификаты и образование</h4>
+      <ul class="cert-list">${t.certs.map(c => `<li>${c}</li>`).join('')}</ul>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:24px;" onclick="closeModal('trainerModal');openModal('joinModal')">Записаться к ${t.name.split(' ')[0]}</button>
+    `;
+    openModal('trainerModal');
+  }
+</script>
+</body>
+</html>

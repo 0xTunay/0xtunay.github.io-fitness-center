@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>О нас — FitLife Pro</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <style>
+    .about-intro {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .big-number {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 120px;
+      line-height: 1;
+      color: transparent;
+      -webkit-text-stroke: 2px rgba(230,48,48,0.3);
+      display: block;
+      margin-bottom: -20px;
+    }
+
+    .timeline { position: relative; padding-left: 40px; }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 12px; top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 40px;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -34px;
+      top: 6px;
+      width: 10px; height: 10px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 0 4px rgba(230,48,48,0.2);
+    }
+
+    .timeline-year {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      color: var(--accent);
+      letter-spacing: 2px;
+      margin-bottom: 4px;
+    }
+
+    .timeline-title { font-weight: 700; margin-bottom: 6px; }
+    .timeline-desc { color: var(--text-muted); font-size: 13px; line-height: 1.7; }
+
+    /* Values */
+    .value-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      text-align: center;
+    }
+
+    .value-icon { font-size: 40px; margin-bottom: 16px; display: block; }
+    .value-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; margin-bottom: 12px; }
+    .value-text { color: var(--text-muted); font-size: 13px; line-height: 1.8; }
+
+    @media (max-width: 768px) {
+      .about-intro { grid-template-columns: 1fr; gap: 40px; }
+      .big-number { font-size: 80px; }
+    }
+  </style>
+</head>
+<body data-page="about">
+
+<div id="header-placeholder"></div>
+<div class="page-content">
+
+  <!-- HERO -->
+  <div class="page-hero">
+    <div class="container">
+      <p class="section-label fade-in">Наша история</p>
+      <h1 class="section-title fade-in">О нас</h1>
+      <p class="section-sub fade-in">
+        FitLife Pro — это больше чем фитнес-центр. Это сообщество людей, которые ставят здоровье на первое место.
+      </p>
+    </div>
+  </div>
+
+  <!-- INTRO -->
+  <section class="section">
+    <div class="container">
+      <div class="about-intro">
+        <div>
+          <p class="section-label fade-in">Кто мы</p>
+          <h2 class="section-title fade-in">8 лет <em>формируем</em><br>чемпионов</h2>
+          <p class="fade-in" style="color:var(--text-muted);font-size:15px;line-height:1.9;margin-bottom:24px;">
+            FitLife Pro был основан в 2018 году командой профессиональных спортсменов и тренеров с одной целью — создать место, где каждый сможет достичь своих целей.
+          </p>
+          <p class="fade-in" style="color:var(--text-muted);font-size:15px;line-height:1.9;margin-bottom:40px;">
+            За 8 лет мы помогли более 5000 клиентов изменить своё тело и образ жизни. Наш подход — персональный: нет двух одинаковых программ, потому что нет двух одинаковых людей.
+          </p>
+          <div style="display:flex;gap:40px;" class="fade-in">
+            <div>
+              <span style="font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--accent);letter-spacing:2px;" data-counter="5000" data-suffix="+">0</span>
+              <div style="font-size:12px;color:var(--text-muted);font-weight:600;letter-spacing:1.5px;text-transform:uppercase;">Клиентов</div>
+            </div>
+            <div>
+              <span style="font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--accent);letter-spacing:2px;" data-counter="15">0</span>
+              <div style="font-size:12px;color:var(--text-muted);font-weight:600;letter-spacing:1.5px;text-transform:uppercase;">Тренеров</div>
+            </div>
+            <div>
+              <span style="font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--accent);letter-spacing:2px;" data-counter="8">0</span>
+              <div style="font-size:12px;color:var(--text-muted);font-weight:600;letter-spacing:1.5px;text-transform:uppercase;">Лет</div>
+            </div>
+          </div>
+        </div>
+        <div class="fade-in">
+          <span class="big-number">2018</span>
+          <div class="card">
+            <p style="font-size:16px;font-style:italic;color:var(--text-muted);line-height:1.8;margin-bottom:16px;">
+              «Мы верим, что каждый человек способен на большее. Наша задача — создать условия, в которых это большее становится реальностью.»
+            </p>
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="width:44px;height:44px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;">АВ</div>
+              <div>
+                <div style="font-weight:700;">Александр Волков</div>
+                <div style="color:var(--text-muted);font-size:12px;">Основатель FitLife Pro</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIMELINE -->
+  <div class="divider"></div>
+  <section class="section">
+    <div class="container">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start">
+        <div>
+          <p class="section-label fade-in">История</p>
+          <h2 class="section-title fade-in">Наш <em>путь</em></h2>
+        </div>
+        <div class="timeline fade-in">
+          <div class="timeline-item">
+            <div class="timeline-year">2018</div>
+            <div class="timeline-title">Открытие первого зала</div>
+            <div class="timeline-desc">500 м² в центре Бреста. 3 тренера и 50 первых клиентов, которые поверили в нас.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-year">2019</div>
+            <div class="timeline-title">Расширение и бассейн</div>
+            <div class="timeline-desc">Добавили 25-метровый бассейн и зону йоги. Команда выросла до 8 тренеров.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-year">2021</div>
+            <div class="timeline-title">1000 постоянных клиентов</div>
+            <div class="timeline-desc">Несмотря на сложный период, сохранили команду и приобрели 1000-го постоянного клиента.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-year">2023</div>
+            <div class="timeline-title">Премиум-зона и СПА</div>
+            <div class="timeline-desc">Открыли элитный СПА-комплекс с хаммамом и массажным кабинетом.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-year">2026</div>
+            <div class="timeline-title">2000 м² и 15 тренеров</div>
+            <div class="timeline-desc">Сегодня FitLife Pro — один из лучших фитнес-центров Боеста с 1200+ активными клиентами.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VALUES -->
+  <div class="divider"></div>
+  <section class="section">
+    <div class="container">
+      <p class="section-label" style="justify-content:center;margin-bottom:16px;">Наши принципы</p>
+      <h2 class="section-title" style="text-align:center;margin-bottom:60px;">Ценности <em>FitLife Pro</em></h2>
+      <div class="grid-4">
+        <div class="value-card fade-in">
+          <span class="value-icon">🎯</span>
+          <h3 class="value-title">Результат</h3>
+          <p class="value-text">Каждое решение мы принимаем исходя из пользы для клиента. Результат — наш главный KPI.</p>
+        </div>
+        <div class="value-card fade-in fade-in-delay-1">
+          <span class="value-icon">🤝</span>
+          <h3 class="value-title">Честность</h3>
+          <p class="value-text">Прозрачные цены, реалистичные обещания. Мы не обещаем чудес — мы обещаем работу.</p>
+        </div>
+        <div class="value-card fade-in fade-in-delay-2">
+          <span class="value-icon">⚡</span>
+          <h3 class="value-title">Прогресс</h3>
+          <p class="value-text">Постоянно учимся и внедряем лучшие практики фитнес-индустрии. Стоять на месте — не для нас.</p>
+        </div>
+        <div class="value-card fade-in fade-in-delay-3">
+          <span class="value-icon">❤️</span>
+          <h3 class="value-title">Сообщество</h3>
+          <p class="value-text">FitLife Pro — это семья. Здесь поддерживают и вдохновляют. Здесь находят друзей на всю жизнь.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+<div id="footer-placeholder"></div>
+
+<script src="js/components.js"></script>
+<script src="js/ui.js"></script>
+</body>
+</html>

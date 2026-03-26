@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Услуги — FitLife Pro</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <style>
+    .service-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: var(--transition);
+    }
+
+    .service-card:hover {
+      border-color: rgba(230,48,48,0.3);
+      transform: translateY(-6px);
+      box-shadow: 0 24px 48px rgba(0,0,0,0.4);
+    }
+
+    .service-img {
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 64px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-img::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 40%, var(--card-bg));
+    }
+
+    .service-body { padding: 28px; }
+
+    .service-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 24px;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+
+    .service-desc {
+      color: var(--text-muted);
+      font-size: 13px;
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .service-features {
+      list-style: none;
+      margin-bottom: 24px;
+    }
+
+    .service-features li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-muted);
+      font-size: 12px;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .service-features li:last-child { border-bottom: none; }
+    .service-features li::before { content: '✓'; color: var(--accent); font-weight: 700; }
+
+    .service-price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      color: var(--accent);
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+
+    .service-price span { font-family: 'Montserrat', sans-serif; font-size: 13px; color: var(--text-muted); font-weight: 400; }
+
+    /* ─── SERVICE TABS ─── */
+    .filter-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+    }
+
+    .filter-tab {
+      padding: 10px 24px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .filter-tab.active, .filter-tab:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .service-card[data-category] { transition: opacity 0.3s, transform 0.3s; }
+    .service-card.hidden { opacity: 0; pointer-events: none; position: absolute; }
+
+    /* ─── PROCESS STEPS ─── */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      position: relative;
+    }
+
+    .steps::before {
+      content: '';
+      position: absolute;
+      top: 28px; left: 10%; right: 10%;
+      height: 1px;
+      background: linear-gradient(to right, var(--accent), rgba(230,48,48,0.2));
+      z-index: 0;
+    }
+
+    .step {
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      padding: 0 20px;
+    }
+
+    .step-num {
+      width: 56px; height: 56px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 24px;
+      letter-spacing: 1px;
+      margin: 0 auto 20px;
+      box-shadow: 0 0 0 4px var(--bg), 0 0 0 5px var(--accent);
+    }
+
+    .step-title { font-weight: 700; font-size: 14px; margin-bottom: 8px; }
+    .step-desc { color: var(--text-muted); font-size: 12px; line-height: 1.7; }
+
+    @media (max-width: 768px) {
+      .steps { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+      .steps::before { display: none; }
+    }
+  </style>
+</head>
+<body data-page="services">
+
+<div id="header-placeholder"></div>
+<div class="page-content">
+
+  <!-- ─── PAGE HERO ─── -->
+  <div class="page-hero">
+    <div class="container">
+      <p class="section-label fade-in">Что мы предлагаем</p>
+      <h1 class="section-title fade-in">Наши <em>услуги</em></h1>
+      <p class="section-sub fade-in">
+        Полный спектр фитнес-услуг под одной крышей. От тренажёрного зала до нутрициологии.
+      </p>
+    </div>
+  </div>
+
+  <!-- ─── SERVICES ─── -->
+  <section class="section">
+    <div class="container">
+      <div class="filter-tabs">
+        <button class="filter-tab active" data-filter="all">Все</button>
+        <button class="filter-tab" data-filter="training">Тренировки</button>
+        <button class="filter-tab" data-filter="recovery">Восстановление</button>
+        <button class="filter-tab" data-filter="nutrition">Питание</button>
+      </div>
+
+      <div class="grid-3" id="servicesGrid">
+
+        <div class="service-card fade-in" data-category="training">
+          <div class="service-img" style="background:linear-gradient(135deg,#1a0808,#2d1010);">🏋️</div>
+          <div class="service-body">
+            <h3 class="service-title">Тренажёрный зал</h3>
+            <p class="service-desc">2000 м² зона со свободными весами, тренажёрами и силовыми стойками.</p>
+            <ul class="service-features">
+              <li>Оборудование Technogym / Life Fitness</li>
+              <li>Зона свободных весов до 100 кг</li>
+              <li>Электронные тренажёры с экранами</li>
+              <li>Личный шкафчик в раздевалке</li>
+            </ul>
+            <div class="service-price">от 2 500 ₽ <span>/ месяц</span></div>
+            <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="openModal('joinModal')">Записаться</button>
+          </div>
+        </div>
+
+        <div class="service-card fade-in fade-in-delay-1" data-category="training">
+          <div class="service-img" style="background:linear-gradient(135deg,#0a0a1a,#101028);">👤</div>
+          <div class="service-body">
+            <h3 class="service-title">Персональный тренер</h3>
+            <p class="service-desc">Индивидуальная программа тренировок с профессиональным тренером.</p>
+            <ul class="service-features">
+              <li>Первичная диагностика и тест</li>
+              <li>Программа под ваши цели</li>
+              <li>Контроль техники выполнения</li>
+              <li>Корректировка каждые 2 недели</li>
+            </ul>
+            <div class="service-price">от 3 500 ₽ <span>/ занятие</span></div>
+            <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="openModal('joinModal')">Записаться</button>
+          </div>
+        </div>
+
+        <div class="service-card fade-in fade-in-delay-2" data-category="training">
+          <div class="service-img" style="background:linear-gradient(135deg,#0a1a0a,#102010);">🧘</div>
+          <div class="service-body">
+            <h3 class="service-title">Йога и Пилатес</h3>
+            <p class="service-desc">Групповые и персональные занятия для гибкости и ментального здоровья.</p>
+            <ul class="service-features">
+              <li>Хатха, виньяса, инь-йога</li>
+              <li>Пилатес с тренажёрами</li>
+              <li>Группы до 10 человек</li>
+              <li>Коврики и реквизит включены</li>
+            </ul>
+            <div class="service-price">от 1 800 ₽ <span>/ месяц</span></div>
+            <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="openModal('joinModal')">Записаться</button>
+          </div>
+        </div>
+
+        <div class="service-card fade-in" data-category="training">
+          <div class="service-img" style="background:linear-gradient(135deg,#1a0808,#2a0808);">🥊</div>
+          <div class="service-body">
+            <h3 class="service-title">Бокс и MMA-фитнес</h3>
+            <p class="service-desc">Энергичные тренировки для сжигания жира и развития координации.</p>
+            <ul class="service-features">
+              <li>Груши, перчатки включены</li>
+              <li>Работа в парах</li>
+              <li>Функциональный тренинг</li>
+              <li>Без спарринга (безопасно)</li>
+            </ul>
+            <div class="service-price">от 2 000 ₽ <span>/ месяц</span></div>
+            <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="openModal('joinModal')">Записаться</button>
+          </div>
+        </div>
+
+        <div class="service-card fade-in fade-in-delay-1" data-category="recovery">
+          <div class="service-img" style="background:linear-gradient(135deg,#080d1a,#10152a);">🏊</div>
+          <div class="service-body">
+            <h3 class="service-title">Бассейн и СПА</h3>
+            <p class="service-desc">25-метровый бассейн, джакузи, сауна и хаммам для полного восстановления.</p>
+            <ul class="service-features">
+              <li>Температура воды 27°C</li>
+              <li>Дорожки для плавания</li>
+              <li>Финская сауна 80°C</li>
+              <li>Хаммам и инфракрасная кабина</li>
+            </ul>
+            <div class="service-price">от 2 200 ₽ <span>/ месяц</span></div>
+            <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="openModal('joinModal')">Записаться</button>
+          </div>
+        </div>
+
+        <div class="service-card fade-in fade-in-delay-2" data-category="nutrition">
+          <div class="service-img" style="background:linear-gradient(135deg,#1a1a0a,#2a2510);">🥗</div>
+          <div class="service-body">
+            <h3 class="service-title">Нутрициология</h3>
+            <p class="service-desc">Персональные планы питания от дипломированных нутрициологов.</p>
+            <ul class="service-features">
+              <li>Анализ состава тела</li>
+              <li>Индивидуальный план питания</li>
+              <li>Еженедельные корректировки</li>
+              <li>Поддержка в мессенджере</li>
+            </ul>
+            <div class="service-price">от 4 000 ₽ <span>/ месяц</span></div>
+            <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="openModal('joinModal')">Записаться</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── HOW IT WORKS ─── -->
+  <div class="divider"></div>
+  <section class="section">
+    <div class="container">
+      <p class="section-label" style="justify-content:center;">Как начать</p>
+      <h2 class="section-title" style="text-align:center;margin-bottom:60px;">4 шага к <em>результату</em></h2>
+      <div class="steps">
+        <div class="step fade-in">
+          <div class="step-num">1</div>
+          <h4 class="step-title">Оставьте заявку</h4>
+          <p class="step-desc">Заполните форму или позвоните нам. Ответим за 15 минут.</p>
+        </div>
+        <div class="step fade-in fade-in-delay-1">
+          <div class="step-num">2</div>
+          <h4 class="step-title">Диагностика</h4>
+          <p class="step-desc">Бесплатная первичная оценка физической подготовки и целей.</p>
+        </div>
+        <div class="step fade-in fade-in-delay-2">
+          <div class="step-num">3</div>
+          <h4 class="step-title">Программа</h4>
+          <p class="step-desc">Тренер разработает план тренировок персонально под вас.</p>
+        </div>
+        <div class="step fade-in fade-in-delay-3">
+          <div class="step-num">4</div>
+          <h4 class="step-title">Результат</h4>
+          <p class="step-desc">Тренируйтесь, отслеживайте прогресс и достигайте целей.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+<div id="footer-placeholder"></div>
+
+<!-- JOIN MODAL -->
+<div class="modal" id="joinModal">
+  <div class="modal-overlay"></div>
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('joinModal')">✕</button>
+    <h3 class="modal-title">Записаться</h3>
+    <p class="modal-sub">Оставьте контакты — мы перезвоним в течение 15 минут</p>
+    <form id="joinForm">
+      <div class="form-group">
+        <label>Имя</label>
+        <input type="text" name="name" placeholder="Ваше имя" data-validate="required,minlen:2">
+      </div>
+      <div class="form-group">
+        <label>Телефон</label>
+        <input type="tel" name="phone" placeholder="+375 (___) ___-__-__" data-validate="required,phone">
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
+        Отправить заявку
+      </button>
+    </form>
+  </div>
+</div>
+
+<script src="js/components.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/form.js"></script>
+<script>
+  // Filter tabs
+  document.querySelectorAll('.filter-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+
+      const filter = tab.dataset.filter;
+      document.querySelectorAll('.service-card').forEach(card => {
+        if (filter === 'all' || card.dataset.category === filter) {
+          card.style.display = 'flex';
+          card.style.flexDirection = 'column';
+          setTimeout(() => { card.style.opacity = '1'; card.style.transform = ''; }, 10);
+        } else {
+          card.style.opacity = '0';
+          card.style.transform = 'scale(0.95)';
+          setTimeout(() => { card.style.display = 'none'; }, 300);
+        }
+      });
+    });
+  });
+</script>
+</body>
+</html>

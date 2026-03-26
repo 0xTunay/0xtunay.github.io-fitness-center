@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Цены — FitLife Pro</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <style>
+    /* ─── BILLING TOGGLE ─── */
+    .billing-toggle {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 60px;
+      justify-content: center;
+    }
+
+    .billing-label {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      transition: var(--transition);
+    }
+
+    .billing-label.active { color: var(--text); }
+
+    .toggle-switch {
+      width: 52px; height: 28px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      position: relative;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .toggle-switch.on { background: var(--accent); border-color: var(--accent); }
+
+    .toggle-knob {
+      width: 20px; height: 20px;
+      background: #fff;
+      border-radius: 50%;
+      position: absolute;
+      top: 3px; left: 4px;
+      transition: var(--transition);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+
+    .toggle-switch.on .toggle-knob { transform: translateX(24px); }
+
+    .save-badge {
+      background: rgba(34,197,94,0.15);
+      border: 1px solid rgba(34,197,94,0.3);
+      color: #22c55e;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 2px;
+    }
+
+    /* ─── PRICING CARDS ─── */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 80px;
+    }
+
+    .pricing-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 40px 32px;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pricing-card.featured {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent), 0 30px 60px rgba(230,48,48,0.15);
+    }
+
+    .pricing-card.featured::before {
+      content: 'Популярный';
+      position: absolute;
+      top: 20px; right: -28px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 6px 40px;
+      transform: rotate(45deg);
+      transform-origin: center;
+    }
+
+    .plan-name {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .plan-price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 64px;
+      letter-spacing: 2px;
+      line-height: 1;
+      margin-bottom: 8px;
+      transition: var(--transition);
+    }
+
+    .plan-price .currency { font-size: 32px; vertical-align: top; margin-top: 12px; display: inline-block; }
+    .plan-price .period { font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 400; color: var(--text-muted); }
+
+    .plan-desc {
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-bottom: 32px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+      line-height: 1.7;
+    }
+
+    .plan-features { list-style: none; margin-bottom: 36px; }
+
+    .plan-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 0;
+      font-size: 13px;
+      color: var(--text-muted);
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+
+    .plan-features li.included { color: var(--text); }
+
+    .feature-check {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .check-yes { background: rgba(34,197,94,0.15); color: #22c55e; border: 1px solid rgba(34,197,94,0.3); }
+    .check-no  { background: var(--bg3); color: var(--text-dim); border: 1px solid var(--border); }
+
+    /* ─── CALCULATOR ─── */
+    .calculator {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 48px;
+      margin-bottom: 60px;
+    }
+
+    .calc-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 32px;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+
+    .calc-desc {
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-bottom: 40px;
+    }
+
+    .calc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    .calc-options h4 {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .calc-option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 13px;
+    }
+
+    .calc-option:hover { border-color: rgba(230,48,48,0.3); }
+
+    .calc-option.selected {
+      border-color: var(--accent);
+      background: rgba(230,48,48,0.08);
+      color: var(--text);
+    }
+
+    .calc-option input[type=checkbox],
+    .calc-option input[type=radio] {
+      accent-color: var(--accent);
+      width: 16px; height: 16px;
+      cursor: pointer;
+    }
+
+    .calc-result {
+      background: linear-gradient(135deg, rgba(230,48,48,0.1), rgba(230,48,48,0.05));
+      border: 1px solid rgba(230,48,48,0.3);
+      border-radius: var(--radius);
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .calc-total-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .calc-total-price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 72px;
+      color: var(--accent);
+      letter-spacing: 3px;
+      line-height: 1;
+      margin-bottom: 8px;
+      transition: var(--transition);
+    }
+
+    .calc-total-per { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; }
+
+    .calc-breakdown {
+      width: 100%;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding-top: 20px;
+      margin-bottom: 24px;
+    }
+
+    .calc-breakdown-item {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text-muted);
+      padding: 4px 0;
+    }
+
+    @media (max-width: 768px) {
+      .pricing-grid { grid-template-columns: 1fr; }
+      .calc-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body data-page="pricing">
+
+<div id="header-placeholder"></div>
+<div class="page-content">
+
+  <!-- HERO -->
+  <div class="page-hero">
+    <div class="container">
+      <p class="section-label fade-in">Абонементы</p>
+      <h1 class="section-title fade-in">Прозрачные <em>цены</em></h1>
+      <p class="section-sub fade-in">
+        Никаких скрытых платежей. Выберите подходящий план и начните путь к цели.
+      </p>
+    </div>
+  </div>
+
+  <!-- PRICING -->
+  <section class="section">
+    <div class="container">
+
+      <!-- Toggle -->
+      <div class="billing-toggle fade-in">
+        <span class="billing-label active" id="labelMonth">Ежемесячно</span>
+        <div class="toggle-switch" id="billingToggle" onclick="toggleBilling()">
+          <div class="toggle-knob"></div>
+        </div>
+        <span class="billing-label" id="labelYear">Ежегодно</span>
+        <span class="save-badge">Скидка 20%</span>
+      </div>
+
+      <!-- Cards -->
+      <div class="pricing-grid">
+
+        <!-- BASIC -->
+        <div class="pricing-card fade-in">
+          <div class="plan-name">Базовый</div>
+          <div class="plan-price">
+            <span class="currency">₽</span>
+            <span id="price-basic">2500</span>
+            <span class="period"> / мес</span>
+          </div>
+          <p class="plan-desc">Идеально для начинающих. Доступ в тренажёрный зал в любое время.</p>
+          <ul class="plan-features">
+            <li class="included"><span class="feature-check check-yes">✓</span>Тренажёрный зал (безлимит)</li>
+            <li class="included"><span class="feature-check check-yes">✓</span>Раздевалка и шкафчик</li>
+            <li class="included"><span class="feature-check check-yes">✓</span>2 групповых занятия/мес</li>
+            <li><span class="feature-check check-no">–</span>Персональный тренер</li>
+            <li><span class="feature-check check-no">–</span>Бассейн и СПА</li>
+            <li><span class="feature-check check-no">–</span>Консультация нутрициолога</li>
+            <li><span class="feature-check check-no">–</span>Приложение с программой</li>
+          </ul>
+          <button class="btn btn-outline" style="width:100%;justify-content:center;" onclick="openModal('joinModal')">Выбрать план</button>
+        </div>
+
+        <!-- PRO (featured) -->
+        <div class="pricing-card featured fade-in fade-in-delay-1">
+          <div class="plan-name">Профессиональный</div>
+          <div class="plan-price" style="color:var(--accent)">
+            <span class="currency">₽</span>
+            <span id="price-pro">4500</span>
+            <span class="period" style="color:var(--text-muted)"> / мес</span>
+          </div>
+          <p class="plan-desc">Полный доступ ко всем возможностям клуба. Оптимальный выбор.</p>
+          <ul class="plan-features">
+            <li class="included"><span class="feature-check check-yes">✓</span>Тренажёрный зал (безлимит)</li>
+            <li class="included"><span class="feature-check check-yes">✓</span>Все групповые занятия</li>
+            <li class="included"><span class="feature-check check-yes">✓</span>Бассейн и сауна</li>
+            <li class="included"><span class="feature-check check-yes">✓</span>4 занятия с тренером/мес</li>
+            <li class="included"><span class="feature-check check-yes">✓</span>Консультация нутрициолога</li>
+            <li class="included"><span class="feature-check check-yes">✓</span>Приложение с программой</li>
+            <li><span class="feature-check check-no">–</span>СПА-процедуры</li>
+          </ul>
+          <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="openModal('joinModal')">Выбрать план</button>
+        </div>
+
+        <!-- ELITE -->
+        <div class="pricing-card fade-in fade-in-delay-2">
+          <div class="plan-name">Элитный</div>
+          <div class="plan-price">
+            <span class="currency">₽</span>
+            <span id="price-elite">8000</span>
+            <span class="period"> / мес</span>
+          </div>
+          <p class="plan-desc">Всё включено. Максимальный сервис и внимание для достижения целей.</p>
+          <ul class="plan-features">
+            <li class="included"><span class="feature-check check-yes">✓</span>Всё из «Профессионального»</li>
+            <li class="included"><span class="feature-check check-yes">✓</span>Безлимит персональных тренировок</li>
+            <li class="included"><span class="feature-check check-yes">✓</span>СПА-процедуры (хаммам, массаж)</li>
+            <li class="included"><span class="feature-check check-yes">✓</span>Персональный план питания</li>
+            <li class="included"><span class="feature-check check-yes">✓</span>Анализ состава тела (ежемесячно)</li>
+            <li class="included"><span class="feature-check check-yes">✓</span>Приоритетная запись</li>
+            <li class="included"><span class="feature-check check-yes">✓</span>Гостевой пропуск 2 раза/мес</li>
+          </ul>
+          <button class="btn btn-outline" style="width:100%;justify-content:center;" onclick="openModal('joinModal')">Выбрать план</button>
+        </div>
+
+      </div>
+
+      <!-- ─── CALCULATOR ─── -->
+      <div class="calculator fade-in">
+        <h3 class="calc-title">Калькулятор стоимости</h3>
+        <p class="calc-desc">Соберите свой идеальный пакет и узнайте точную стоимость</p>
+
+        <div class="calc-grid">
+          <div class="calc-options">
+            <h4>База</h4>
+            <label class="calc-option selected">
+              <input type="radio" name="base" value="2500" checked onchange="calcPrice()">
+              Тренажёрный зал — 2 500 ₽/мес
+            </label>
+            <label class="calc-option">
+              <input type="radio" name="base" value="4500" onchange="calcPrice()">
+              Тренажёрный зал + Бассейн — 4 500 ₽/мес
+            </label>
+
+            <h4 style="margin-top:24px;">Дополнения</h4>
+            <label class="calc-option" id="opt-trainer">
+              <input type="checkbox" value="3500" onchange="calcPrice()">
+              Персональный тренер (4 занятия) — +3 500 ₽
+            </label>
+            <label class="calc-option" id="opt-nutrition">
+              <input type="checkbox" value="4000" onchange="calcPrice()">
+              Нутрициолог — +4 000 ₽
+            </label>
+            <label class="calc-option" id="opt-spa">
+              <input type="checkbox" value="2000" onchange="calcPrice()">
+              СПА-процедуры — +2 000 ₽
+            </label>
+            <label class="calc-option" id="opt-app">
+              <input type="checkbox" value="500" onchange="calcPrice()">
+              Фитнес-приложение — +500 ₽
+            </label>
+
+            <h4 style="margin-top:24px;">Период оплаты</h4>
+            <label class="calc-option selected" id="period-month">
+              <input type="radio" name="period" value="1" checked onchange="calcPrice()">
+              1 месяц
+            </label>
+            <label class="calc-option" id="period-3">
+              <input type="radio" name="period" value="3" onchange="calcPrice()">
+              3 месяца (скидка 10%)
+            </label>
+            <label class="calc-option" id="period-12">
+              <input type="radio" name="period" value="12" onchange="calcPrice()">
+              12 месяцев (скидка 20%)
+            </label>
+          </div>
+
+          <div class="calc-result">
+            <div class="calc-total-label">Итого в месяц</div>
+            <div class="calc-total-price" id="calcTotal">2 500</div>
+            <div class="calc-total-per" id="calcPer">₽ / месяц</div>
+            <div class="calc-breakdown" id="calcBreakdown"></div>
+            <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="openModal('joinModal')">Оформить абонемент</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+<div id="footer-placeholder"></div>
+
+<!-- JOIN MODAL -->
+<div class="modal" id="joinModal">
+  <div class="modal-overlay"></div>
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('joinModal')">✕</button>
+    <h3 style="font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;margin-bottom:8px;">Оформить абонемент</h3>
+    <p style="color:var(--text-muted);font-size:13px;margin-bottom:32px;">Оставьте контакты — перезвоним в течение 15 минут</p>
+    <form id="joinForm">
+      <div class="form-group"><label>Имя</label><input type="text" name="name" placeholder="Ваше имя" data-validate="required,minlen:2"></div>
+      <div class="form-group"><label>Телефон</label><input type="tel" name="phone" placeholder="+375 (___) ___-__-__" data-validate="required,phone"></div>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">Отправить заявку</button>
+    </form>
+  </div>
+</div>
+
+<script src="js/components.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/form.js"></script>
+<script>
+  let isAnnual = false;
+
+  const monthly = { basic: 2500, pro: 4500, elite: 8000 };
+
+  function toggleBilling() {
+    isAnnual = !isAnnual;
+    const toggle = document.getElementById('billingToggle');
+    toggle.classList.toggle('on', isAnnual);
+    document.getElementById('labelMonth').classList.toggle('active', !isAnnual);
+    document.getElementById('labelYear').classList.toggle('active', isAnnual);
+
+    const mult = isAnnual ? 0.8 : 1;
+    document.getElementById('price-basic').textContent = Math.round(monthly.basic * mult).toLocaleString('ru-RU');
+    document.getElementById('price-pro').textContent   = Math.round(monthly.pro   * mult).toLocaleString('ru-RU');
+    document.getElementById('price-elite').textContent = Math.round(monthly.elite * mult).toLocaleString('ru-RU');
+  }
+
+  // Highlight selected calc options
+  document.querySelectorAll('.calc-option').forEach(opt => {
+    const input = opt.querySelector('input');
+    opt.addEventListener('click', () => {
+      if (input.type === 'radio') {
+        document.querySelectorAll(`input[name="${input.name}"]`).forEach(r => {
+          r.closest('.calc-option').classList.remove('selected');
+        });
+        opt.classList.add('selected');
+      } else {
+        opt.classList.toggle('selected', input.checked);
+      }
+    });
+  });
+
+  function calcPrice() {
+    const base     = parseInt(document.querySelector('input[name="base"]:checked').value);
+    const period   = parseInt(document.querySelector('input[name="period"]:checked').value);
+    const addons   = [...document.querySelectorAll('.calc-options input[type=checkbox]:checked')].map(c => parseInt(c.value));
+    const discount = period === 12 ? 0.8 : period === 3 ? 0.9 : 1;
+
+    const monthly  = base + addons.reduce((a,b) => a+b, 0);
+    const total    = Math.round(monthly * discount);
+    const totalAll = total * period;
+
+    document.getElementById('calcTotal').textContent  = total.toLocaleString('ru-RU');
+    document.getElementById('calcPer').textContent    = period > 1 ? `₽/мес · Итого ${totalAll.toLocaleString('ru-RU')} ₽` : '₽ / месяц';
+
+    const items = [
+      ['База', base.toLocaleString('ru-RU') + ' ₽'],
+      ...addons.map((a,i) => [['Тренер','Нутрициолог','СПА','Приложение'][i], '+' + a.toLocaleString('ru-RU') + ' ₽']),
+      ...(discount < 1 ? [['Скидка', '-' + Math.round(monthly * (1-discount)).toLocaleString('ru-RU') + ' ₽']] : []),
+    ];
+
+    document.getElementById('calcBreakdown').innerHTML = items.map(([l,v]) => `
+      <div class="calc-breakdown-item"><span>${l}</span><span>${v}</span></div>
+    `).join('');
+  }
+
+  calcPrice();
+</script>
+</body>
+</html>
