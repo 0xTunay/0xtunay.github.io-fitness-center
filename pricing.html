@@ -315,7 +315,7 @@
         <div class="pricing-card fade-in">
           <div class="plan-name">Базовый</div>
           <div class="plan-price">
-            <span class="currency">₽</span>
+            <span class="currency">BYN</span>
             <span id="price-basic">2500</span>
             <span class="period"> / мес</span>
           </div>
@@ -336,7 +336,7 @@
         <div class="pricing-card featured fade-in fade-in-delay-1">
           <div class="plan-name">Профессиональный</div>
           <div class="plan-price" style="color:var(--accent)">
-            <span class="currency">₽</span>
+            <span class="currency">BYN</span>
             <span id="price-pro">4500</span>
             <span class="period" style="color:var(--text-muted)"> / мес</span>
           </div>
@@ -357,7 +357,7 @@
         <div class="pricing-card fade-in fade-in-delay-2">
           <div class="plan-name">Элитный</div>
           <div class="plan-price">
-            <span class="currency">₽</span>
+            <span class="currency">BYN</span>
             <span id="price-elite">8000</span>
             <span class="period"> / мес</span>
           </div>
@@ -385,30 +385,30 @@
           <div class="calc-options">
             <h4>База</h4>
             <label class="calc-option selected">
-              <input type="radio" name="base" value="2500" checked onchange="calcPrice()">
-              Тренажёрный зал — 2 500 ₽/мес
+              <input type="radio" name="base" value="50" checked onchange="calcPrice()">
+              Тренажёрный зал — 50 BYN/мес
             </label>
             <label class="calc-option">
-              <input type="radio" name="base" value="4500" onchange="calcPrice()">
-              Тренажёрный зал + Бассейн — 4 500 ₽/мес
+              <input type="radio" name="base" value="45" onchange="calcPrice()">
+              Тренажёрный зал + Бассейн — 45 BYN/мес
             </label>
 
             <h4 style="margin-top:24px;">Дополнения</h4>
             <label class="calc-option" id="opt-trainer">
-              <input type="checkbox" value="3500" onchange="calcPrice()">
-              Персональный тренер (4 занятия) — +3 500 ₽
+              <input type="checkbox" value="35" onchange="calcPrice()">
+              Персональный тренер (4 занятия) — +3 500 BYN
             </label>
             <label class="calc-option" id="opt-nutrition">
-              <input type="checkbox" value="4000" onchange="calcPrice()">
-              Нутрициолог — +4 000 ₽
+              <input type="checkbox" value="40" onchange="calcPrice()">
+              Нутрициолог — +4 000 BYN
             </label>
             <label class="calc-option" id="opt-spa">
               <input type="checkbox" value="2000" onchange="calcPrice()">
-              СПА-процедуры — +2 000 ₽
+              СПА-процедуры — +200 BYM
             </label>
             <label class="calc-option" id="opt-app">
               <input type="checkbox" value="500" onchange="calcPrice()">
-              Фитнес-приложение — +500 ₽
+              Фитнес-приложение — +5 BYN
             </label>
 
             <h4 style="margin-top:24px;">Период оплаты</h4>
@@ -428,8 +428,8 @@
 
           <div class="calc-result">
             <div class="calc-total-label">Итого в месяц</div>
-            <div class="calc-total-price" id="calcTotal">2 500</div>
-            <div class="calc-total-per" id="calcPer">₽ / месяц</div>
+            <div class="calc-total-price" id="calcTotal">25</div>
+            <div class="calc-total-per" id="calcPer">BYN / месяц</div>
             <div class="calc-breakdown" id="calcBreakdown"></div>
             <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="openModal('joinModal')">Оформить абонемент</button>
           </div>
@@ -504,12 +504,12 @@
     const totalAll = total * period;
 
     document.getElementById('calcTotal').textContent  = total.toLocaleString('ru-RU');
-    document.getElementById('calcPer').textContent    = period > 1 ? `₽/мес · Итого ${totalAll.toLocaleString('ru-RU')} ₽` : '₽ / месяц';
+    document.getElementById('calcPer').textContent    = period > 1 ? `BYN/мес · Итого ${totalAll.toLocaleString('ru-RU')} BYN` : 'BYN / месяц';
 
     const items = [
-      ['База', base.toLocaleString('ru-RU') + ' ₽'],
-      ...addons.map((a,i) => [['Тренер','Нутрициолог','СПА','Приложение'][i], '+' + a.toLocaleString('ru-RU') + ' ₽']),
-      ...(discount < 1 ? [['Скидка', '-' + Math.round(monthly * (1-discount)).toLocaleString('ru-RU') + ' ₽']] : []),
+      ['База', base.toLocaleString('ru-RU') + ' BYN'],
+      ...addons.map((a,i) => [['Тренер','Нутрициолог','СПА','Приложение'][i], '+' + a.toLocaleString('ru-RU') + ' BYN']),
+      ...(discount < 1 ? [['Скидка', '-' + Math.round(monthly * (1-discount)).toLocaleString('ru-RU') + ' BYN']] : []),
     ];
 
     document.getElementById('calcBreakdown').innerHTML = items.map(([l,v]) => `
